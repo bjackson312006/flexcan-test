@@ -1,0 +1,11 @@
+[package]
+name = "flexcan-test"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+embassy-mcxa = { git = "https://github.com/bjackson312006/embassy.git", branch = "flexcan", features = ["mcxa2xx", "unstable-pac"] }
+embassy-executor = { git = "https://github.com/bjackson312006/embassy.git", branch = "flexcan", features = ["platform-cortex-m", "executor-thread"] }
+cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
+cortex-m-rt = "0.7"
+panic-halt = "1.0"

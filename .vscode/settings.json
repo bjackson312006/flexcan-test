@@ -1,0 +1,5 @@
+{
+    "rust-analyzer.cargo.target": "thumbv8m.main-none-eabihf",
+    "editor.hover.enabled": "on",
+    "rust-analyzer.inlayHints.typeHints.enable": true,
+}
