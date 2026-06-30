@@ -2,9 +2,9 @@
 #![no_main]
 
 use panic_halt as _;
-use embassy_executor::{Spawner, Executor};
+use defmt_rtt as _;
+use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
-use static_cell::StaticCell;
 
 use embassy_mcxa::config::Config;
 use embassy_mcxa::flexcan;
@@ -36,10 +36,8 @@ async fn can_rx_task(rx: FlexCanRx<'static>) {
     }
 }
 
-static EXECUTOR: StaticCell<Executor> = StaticCell::new();
-
 #[embassy_executor::main]
-async fn main(_spawner: Spawner) {
+async fn main(spawner: Spawner) {
     let p = embassy_mcxa::init(Config::default());
 
     use embassy_mcxa::flexcan::filter::{Filter, FilterConfig, filters, StandardId, ExtendedId};
@@ -55,9 +53,6 @@ async fn main(_spawner: Spawner) {
     }).expect("Failed to init FlexCan!!");
     let (tx, rx) = can.split();
 
-    let executor = EXECUTOR.init(Executor::new());
-    executor.run(|spawner: Spawner| {
-        spawner.spawn(can_tx_task(tx).expect("Failed to spawn `can_tx_task()`."));
-        spawner.spawn(can_rx_task(rx).expect("Failed to spawn `can_rx_task()`"));
-    });
+    spawner.spawn(can_tx_task(tx).expect("Failed to spawn `can_tx_task()`."));
+    spawner.spawn(can_rx_task(rx).expect("Failed to spawn `can_rx_task()`."));
 }

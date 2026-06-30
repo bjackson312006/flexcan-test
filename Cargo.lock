@@ -218,6 +218,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "defmt-rtt"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c0f73a4a4a91609e977ae3b7bd831ffa292edfd42ad140a3244a61d805b0e05e"
+dependencies = [
+ "critical-section",
+ "defmt 1.1.0",
+]
+
+[[package]]
 name = "document-features"
 version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -349,6 +359,7 @@ source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213e
 dependencies = [
  "cfg-if",
  "critical-section",
+ "defmt 1.1.0",
  "document-features",
  "embassy-time-driver",
  "embedded-hal 0.2.7",
@@ -467,6 +478,7 @@ dependencies = [
  "cortex-m",
  "cortex-m-rt",
  "defmt 1.1.0",
+ "defmt-rtt",
  "embassy-executor",
  "embassy-mcxa",
  "embassy-time",
