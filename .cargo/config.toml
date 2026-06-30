@@ -2,8 +2,10 @@
 target = "thumbv8m.main-none-eabihf"
 
 [target.thumbv8m.main-none-eabihf]
+runner = "./flash.sh"
 rustflags = [
   "-C", "link-arg=-Tlink.x",       # from cortex-m-rt
+  "-C", "link-arg=-Tdefmt.x",      # defmt log metadata section
   "-C", "link-arg=--nmagic",
 ]
 
