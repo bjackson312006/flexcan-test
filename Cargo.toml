@@ -4,8 +4,11 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-embassy-mcxa = { git = "https://github.com/bjackson312006/embassy.git", branch = "flexcan", features = ["mcxa2xx", "unstable-pac"] }
+embassy-mcxa = { git = "https://github.com/bjackson312006/embassy.git", branch = "flexcan", features = ["mcxa2xx", "unstable-pac", "executor-platform", "defmt"] }
 embassy-executor = { git = "https://github.com/bjackson312006/embassy.git", branch = "flexcan", features = ["platform-cortex-m", "executor-thread"] }
+embassy-time = { git = "https://github.com/bjackson312006/embassy.git", branch = "flexcan" }
 cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
 cortex-m-rt = "0.7"
 panic-halt = "1.0"
+static_cell = "2.1.1"
+defmt = { version = "1.0" }
