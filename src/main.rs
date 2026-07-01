@@ -37,6 +37,7 @@ static TX_NUM: AtomicU32 = AtomicU32::new(0);
 static RX_NUM: AtomicU32 = AtomicU32::new(0);
 static TX_MAILBOX_FULL_COUNT: AtomicU32 = AtomicU32::new(0);
 static BUS_OFF_COUNT: AtomicU32 = AtomicU32::new(0);
+static RX_DROPPED_COUNT: AtomicU32 = AtomicU32::new(0);
 
 bind_interrupts!(struct Irqs {
     CAN0 => InterruptHandler<CAN0>;
@@ -77,6 +78,9 @@ async fn can0_tx_task(mut tx0: FlexCanTx<'static>) {
                         defmt::info!("SendError::BusOff! BUS_OFF_COUNT = {}", &BUS_OFF_COUNT.load(Ordering::Relaxed));
                         BUS_OFF_COUNT.fetch_add(1, Ordering::Relaxed);
                     }
+                    _ => {
+                        defmt::info!("Unknown SendError?");
+                    }
                 }
                 return tx0.send(&frame).await;
             }
@@ -92,7 +96,7 @@ async fn can0_tx_task(mut tx0: FlexCanTx<'static>) {
 #[embassy_executor::task]
 async fn reporter() {
     loop {
-        defmt::info!("TX_NUM = {}, RX_NUM = {}, TX_MAILBOX_FULL_COUNT = {}, BUS_OFF_COUNT = {}", TX_NUM.load(Ordering::Relaxed), RX_NUM.load(Ordering::Relaxed), TX_MAILBOX_FULL_COUNT.load(Ordering::Relaxed), BUS_OFF_COUNT.load(Ordering::Relaxed));
+        defmt::info!("TX_NUM = {}, RX_NUM = {}, TX_MAILBOX_FULL_COUNT = {}, BUS_OFF_COUNT = {}, RX_DROPPED_COUNT = {}", TX_NUM.load(Ordering::Relaxed), RX_NUM.load(Ordering::Relaxed), TX_MAILBOX_FULL_COUNT.load(Ordering::Relaxed), BUS_OFF_COUNT.load(Ordering::Relaxed), RX_DROPPED_COUNT.load(Ordering::Relaxed));
         Timer::after(Duration::from_millis(3000)).await;
     }
 }
@@ -130,6 +134,7 @@ async fn can1_rx_task(rx1: FlexCanRx<'static>) {
 
         let frame = rx1.receive().await;
         RX_NUM.fetch_add(1, Ordering::Relaxed);
+        RX_DROPPED_COUNT.store(rx1.rx_dropped(), Ordering::Relaxed);
     }
 }
 
