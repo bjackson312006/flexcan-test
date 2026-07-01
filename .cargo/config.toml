@@ -11,6 +11,7 @@ rustflags = [
 
 [env]
 DEFMT_LOG = "trace"
+EMBASSY_MCXA_FLEXCAN_CLASSIC_RX_QUEUE_SIZE = "4"
 
 [profile.release]
 opt-level = 3

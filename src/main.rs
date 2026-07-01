@@ -89,7 +89,7 @@ async fn can0_tx_task(mut tx0: FlexCanTx<'static>) {
 
 
 
-        Timer::after(Duration::from_micros(66)).await;
+        Timer::after(Duration::from_micros(67)).await;
     }
 }
 
@@ -134,7 +134,7 @@ async fn can1_rx_task(rx1: FlexCanRx<'static>) {
 
         let frame = rx1.receive().await;
         RX_NUM.fetch_add(1, Ordering::Relaxed);
-        RX_DROPPED_COUNT.store(rx1.rx_dropped(), Ordering::Relaxed);
+        RX_DROPPED_COUNT.store(rx1.rx_dropped_count(), Ordering::Relaxed);
     }
 }
 
