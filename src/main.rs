@@ -71,25 +71,25 @@ async fn can0_tx_task(mut tx0: FlexCanTx<'static>) {
             Err(e) => {
                 match e {
                     SendError::TxMailboxFull => { 
-                        defmt::info!("SendError::TxMailboxFull! TX_MAILBOX_FULL_COUNT = {}", &TX_MAILBOX_FULL_COUNT.load(Ordering::Relaxed));
+                        //defmt::info!("SendError::TxMailboxFull! TX_MAILBOX_FULL_COUNT = {}", &TX_MAILBOX_FULL_COUNT.load(Ordering::Relaxed));
                         TX_MAILBOX_FULL_COUNT.fetch_add(1, Ordering::Relaxed);
                     }
                     SendError::BusOff => { 
-                        defmt::info!("SendError::BusOff! BUS_OFF_COUNT = {}", &BUS_OFF_COUNT.load(Ordering::Relaxed));
+                        //defmt::info!("SendError::BusOff! BUS_OFF_COUNT = {}", &BUS_OFF_COUNT.load(Ordering::Relaxed));
                         BUS_OFF_COUNT.fetch_add(1, Ordering::Relaxed);
                     }
                     _ => {
                         defmt::info!("Unknown SendError?");
                     }
                 }
-                return tx0.send(&frame).await;
+                tx0.send(&frame).await;
             }
         }
         TX_NUM.fetch_add(1, Ordering::Relaxed);
 
 
 
-        Timer::after(Duration::from_micros(100)).await;
+        Timer::after(Duration::from_micros(66)).await;
     }
 }
 
