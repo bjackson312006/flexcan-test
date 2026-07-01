@@ -12,6 +12,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "arbitrary-int"
+version = "2.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "993a810118f8f37e9c4411c86f1c4c940a09a7ab34b7bf2d88d06f50c553fab7"
+
+[[package]]
 name = "autocfg"
 version = "1.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -35,6 +41,29 @@ dependencies = [
  "const-init",
  "critical-section",
  "maitake-sync",
+]
+
+[[package]]
+name = "bilge"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "279c74986684d5cc7bbbd079aa448e8f852992cd385d85bb3a37e374c087b065"
+dependencies = [
+ "arbitrary-int",
+ "bilge-impl",
+]
+
+[[package]]
+name = "bilge-impl"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1176e49f42fe135cd2b56465e4f7d07038d3728f5e9f27fb2f08ed3fef75339"
+dependencies = [
+ "itertools",
+ "proc-macro-error2",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -237,9 +266,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "either"
+version = "1.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "91622ff5e7162018101f2fea40d6ebf4a78bbe5a49736a2020649edf9693679e"
+
+[[package]]
 name = "embassy-embedded-hal"
 version = "0.6.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "embassy-futures",
  "embassy-hal-internal",
@@ -255,7 +290,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor"
 version = "0.10.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "cordyceps",
  "cortex-m",
@@ -268,7 +303,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor-macros"
 version = "0.8.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -279,17 +314,17 @@ dependencies = [
 [[package]]
 name = "embassy-executor-timer-queue"
 version = "0.1.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 
 [[package]]
 name = "embassy-futures"
 version = "0.1.2"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 
 [[package]]
 name = "embassy-hal-internal"
 version = "0.5.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -299,7 +334,7 @@ dependencies = [
 [[package]]
 name = "embassy-mcxa"
 version = "0.1.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "bbqueue",
  "convert_case",
@@ -342,7 +377,7 @@ dependencies = [
 [[package]]
 name = "embassy-sync"
 version = "0.8.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "cfg-if",
  "critical-section",
@@ -355,7 +390,7 @@ dependencies = [
 [[package]]
 name = "embassy-time"
 version = "0.5.1"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "cfg-if",
  "critical-section",
@@ -371,7 +406,7 @@ dependencies = [
 [[package]]
 name = "embassy-time-driver"
 version = "0.2.2"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "document-features",
 ]
@@ -379,7 +414,7 @@ dependencies = [
 [[package]]
 name = "embassy-time-queue-utils"
 version = "0.3.2"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#8213eebf08d55c53ecdfe1becf44f0f1b6906915"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#ee09c95cd213d61e927eb8401993ac0960305b3e"
 dependencies = [
  "embassy-executor-timer-queue",
  "heapless",
@@ -475,6 +510,8 @@ checksum = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582"
 name = "flexcan-test"
 version = "0.1.0"
 dependencies = [
+ "arbitrary-int",
+ "bilge",
  "cortex-m",
  "cortex-m-rt",
  "defmt 1.1.0",
@@ -567,6 +604,15 @@ checksum = "d466e9454f08e4a911e14806c24e16fba1b4c121d1ea474396f396069cf949d9"
 dependencies = [
  "equivalent",
  "hashbrown",
+]
+
+[[package]]
+name = "itertools"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
+dependencies = [
+ "either",
 ]
 
 [[package]]

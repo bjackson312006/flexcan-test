@@ -4,10 +4,17 @@ target = "thumbv8m.main-none-eabihf"
 [target.thumbv8m.main-none-eabihf]
 runner = "./flash.sh"
 rustflags = [
-  "-C", "link-arg=-Tlink.x",       # from cortex-m-rt
-  "-C", "link-arg=-Tdefmt.x",      # defmt log metadata section
+  "-C", "link-arg=-Tlink.x",
+  "-C", "link-arg=-Tdefmt.x",
   "-C", "link-arg=--nmagic",
 ]
 
 [env]
 DEFMT_LOG = "trace"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+overflow-checks = false 

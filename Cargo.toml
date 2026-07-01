@@ -13,3 +13,5 @@ panic-halt = "1.0"
 static_cell = "2.1.1"
 defmt = { version = "1.0" }
 defmt-rtt = "1.0"
+bilge = "0.3.0"
+arbitrary-int = "2.1.1"
