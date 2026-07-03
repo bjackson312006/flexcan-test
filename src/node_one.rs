@@ -53,12 +53,20 @@ pub async fn main(spawner: Spawner, resources: Resources) {
 
 #[embassy_executor::task]
 async fn can0_tx(mut tx0: FlexCanTx<'static>) {
+    use core::sync::atomic::AtomicU16;
+    use core::sync::atomic::Ordering;
+
     // Task for sending outgoing messages
     loop {
-        let frame1 = Frame::new(EXAMPLE_MESSAGE_ONE, &[0, 1, 2]).expect("Message payload too long!");
+        static INCREMENTED: AtomicU16 = AtomicU16::new(0);
+        let id = StandardId::new(INCREMENTED.load(Ordering::Relaxed)).unwrap();
+
+        let frame1 = Frame::new_remote(id, 8).expect("Message payload too long!");
         let frame2 = Frame::new(EXAMPLE_MESSAGE_TWO, &[3, 4, 5, 6]).expect("Message payload too long!");
         tx0.send(&frame1).await;
         tx0.send(&frame2).await;
+
+        INCREMENTED.fetch_add(1, Ordering::Relaxed);
 
         Timer::after(Duration::from_millis(500)).await;
     }

@@ -39,7 +39,8 @@ pub async fn main(spawner: Spawner, resources: Resources) {
     // Create and configure a `FlexCan` instance for CAN1.
     let can1 = FlexCan::new(resources.can, resources.tx_pin, resources.rx_pin, FlexCanConfig {
         filters: filters!(
-            Filter::Standard(EXAMPLE_MESSAGE_ONE), Filter::Extended(EXAMPLE_MESSAGE_TWO),
+            Filter::AcceptAllStandard,
+            //Filter::Standard(EXAMPLE_MESSAGE_ONE), Filter::Extended(EXAMPLE_MESSAGE_TWO),
         ),
         bitrate: 1_000_000,
         ..FlexCanConfig::default()
