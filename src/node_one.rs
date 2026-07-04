@@ -5,13 +5,14 @@ use panic_probe as _;
 use defmt_rtt as _;
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
+use static_cell::ConstStaticCell;
 
 use embassy_mcxa::{
     bind_interrupts, config::Config, Peripherals, Peri,
     peripherals::{CAN0, P1_11, P1_2},
     flexcan::filter::{filters, Filter,},
     flexcan::classic::{
-        FlexCan, FlexCanConfig, FlexCanRx, FlexCanTx, InterruptHandler,
+        FlexCan, FlexCanConfig, FlexCanRx, FlexCanTx, InterruptHandler, Async, RxQueue,
         frame::{Frame, StandardId, ExtendedId},
     },
 };
@@ -26,6 +27,8 @@ bind_interrupts!(struct Irqs {
     CAN0 => InterruptHandler<CAN0>;
 });
 
+static RX_QUEUE: ConstStaticCell<RxQueue<16>> = ConstStaticCell::new(RxQueue::new());
+
 // Outgoing messages
 const EXAMPLE_MESSAGE_ONE: StandardId = StandardId::new(0x01).unwrap();
 const EXAMPLE_MESSAGE_TWO: ExtendedId = ExtendedId::new(0xFAF).unwrap();
@@ -37,7 +40,7 @@ const EXAMPLE_MESSAGE_FOUR: ExtendedId = ExtendedId::new(0x1232).unwrap();
 #[embassy_executor::task]
 pub async fn main(spawner: Spawner, resources: Resources) {
     // Create and configure a `FlexCan` instance for CAN0.
-    let can0 = FlexCan::new(resources.can, resources.tx_pin, resources.rx_pin, FlexCanConfig {
+    let can0 = FlexCan::new_async(resources.can, resources.tx_pin, resources.rx_pin, RX_QUEUE.take(), FlexCanConfig {
         filters: filters!(
             Filter::Standard(EXAMPLE_MESSAGE_THREE), Filter::Extended(EXAMPLE_MESSAGE_FOUR),
         ),
@@ -52,7 +55,7 @@ pub async fn main(spawner: Spawner, resources: Resources) {
 }
 
 #[embassy_executor::task]
-async fn can0_tx(mut tx0: FlexCanTx<'static>) {
+async fn can0_tx(mut tx0: FlexCanTx<'static, Async>) {
     use core::sync::atomic::AtomicU16;
     use core::sync::atomic::Ordering;
 
@@ -73,7 +76,7 @@ async fn can0_tx(mut tx0: FlexCanTx<'static>) {
 }
 
 #[embassy_executor::task]
-async fn can0_rx(rx0: FlexCanRx<'static>) {
+async fn can0_rx(rx0: FlexCanRx<'static, Async>) {
     // Task for receiving incoming messages
     loop {
         let frame = rx0.receive().await;

@@ -5,13 +5,14 @@ use panic_probe as _;
 use defmt_rtt as _;
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
+use static_cell::ConstStaticCell;
 
 use embassy_mcxa::{
     bind_interrupts, config::Config, Peripherals, Peri,
     peripherals::{CAN1, P1_12, P1_17},
     flexcan::filter::{filters, Filter,},
     flexcan::classic::{
-        FlexCan, FlexCanConfig, FlexCanRx, FlexCanTx, InterruptHandler,
+        FlexCan, FlexCanConfig, FlexCanRx, FlexCanTx, InterruptHandler, Async, RxQueue,
         frame::{Frame, StandardId, ExtendedId},
     },
 };
@@ -26,6 +27,8 @@ bind_interrupts!(struct Irqs {
     CAN1 => InterruptHandler<CAN1>;
 });
 
+static RX_QUEUE: ConstStaticCell<RxQueue<16>> = ConstStaticCell::new(RxQueue::new());
+
 // Outgoing messages
 const EXAMPLE_MESSAGE_THREE: StandardId = StandardId::new(0x02).unwrap();
 const EXAMPLE_MESSAGE_FOUR: ExtendedId = ExtendedId::new(0x1232).unwrap();
@@ -37,7 +40,7 @@ const EXAMPLE_MESSAGE_TWO: ExtendedId = ExtendedId::new(0xFAF).unwrap();
 #[embassy_executor::task]
 pub async fn main(spawner: Spawner, resources: Resources) {
     // Create and configure a `FlexCan` instance for CAN1.
-    let can1 = FlexCan::new(resources.can, resources.tx_pin, resources.rx_pin, FlexCanConfig {
+    let can1 = FlexCan::new_async(resources.can, resources.tx_pin, resources.rx_pin, RX_QUEUE.take(), FlexCanConfig {
         filters: filters!(
             Filter::AcceptAllStandard,
             //Filter::Standard(EXAMPLE_MESSAGE_ONE), Filter::Extended(EXAMPLE_MESSAGE_TWO),
@@ -53,7 +56,7 @@ pub async fn main(spawner: Spawner, resources: Resources) {
 }
 
 #[embassy_executor::task]
-async fn can1_tx(mut tx1: FlexCanTx<'static>) {
+async fn can1_tx(mut tx1: FlexCanTx<'static, Async>) {
     // Task for sending outgoing messages
     loop {
         let frame1 = Frame::new(EXAMPLE_MESSAGE_THREE, &[0, 1, 2]).expect("Message payload too long!");
@@ -66,7 +69,7 @@ async fn can1_tx(mut tx1: FlexCanTx<'static>) {
 }
 
 #[embassy_executor::task]
-async fn can1_rx(rx1: FlexCanRx<'static>) {
+async fn can1_rx(rx1: FlexCanRx<'static, Async>) {
     // Task for receiving incoming messages
     loop {
         let frame = rx1.receive().await;

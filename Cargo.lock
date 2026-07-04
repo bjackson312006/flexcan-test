@@ -274,7 +274,7 @@ checksum = "91622ff5e7162018101f2fea40d6ebf4a78bbe5a49736a2020649edf9693679e"
 [[package]]
 name = "embassy-embedded-hal"
 version = "0.6.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "embassy-futures",
  "embassy-hal-internal",
@@ -290,7 +290,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor"
 version = "0.10.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "cordyceps",
  "cortex-m",
@@ -303,7 +303,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor-macros"
 version = "0.8.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -314,17 +314,17 @@ dependencies = [
 [[package]]
 name = "embassy-executor-timer-queue"
 version = "0.1.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 
 [[package]]
 name = "embassy-futures"
 version = "0.1.2"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 
 [[package]]
 name = "embassy-hal-internal"
 version = "0.5.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -334,7 +334,7 @@ dependencies = [
 [[package]]
 name = "embassy-mcxa"
 version = "0.1.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "bbqueue",
  "convert_case",
@@ -377,7 +377,7 @@ dependencies = [
 [[package]]
 name = "embassy-sync"
 version = "0.8.0"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "cfg-if",
  "critical-section",
@@ -390,7 +390,7 @@ dependencies = [
 [[package]]
 name = "embassy-time"
 version = "0.5.1"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "cfg-if",
  "critical-section",
@@ -406,7 +406,7 @@ dependencies = [
 [[package]]
 name = "embassy-time-driver"
 version = "0.2.2"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "document-features",
 ]
@@ -414,7 +414,7 @@ dependencies = [
 [[package]]
 name = "embassy-time-queue-utils"
 version = "0.3.2"
-source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#e169a609a7b89a00a178969a52c2563c7ad39f0c"
+source = "git+https://github.com/bjackson312006/embassy.git?branch=flexcan#7e739b8cf9493ca685eb0cf15c4eb5c99fc13354"
 dependencies = [
  "embassy-executor-timer-queue",
  "heapless",

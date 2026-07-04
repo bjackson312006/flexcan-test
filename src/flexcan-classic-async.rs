@@ -5,12 +5,13 @@ use panic_probe as _;
 use defmt_rtt as _;
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
+use static_cell::ConstStaticCell;
 
 use embassy_mcxa::{
     bind_interrupts, config::Config, peripherals::CAN0,
     flexcan::filter::{filters, Filter,},
     flexcan::classic::{
-        FlexCan, FlexCanConfig, FlexCanRx, FlexCanTx, InterruptHandler,
+        FlexCan, FlexCanConfig, FlexCanRx, FlexCanTx, InterruptHandler, Async, RxQueue,
         frame::{Frame, StandardId, ExtendedId},
     },
 };
@@ -18,6 +19,8 @@ use embassy_mcxa::{
 bind_interrupts!(struct Irqs {
     CAN0 => InterruptHandler<CAN0>;
 });
+
+static RX_QUEUE: ConstStaticCell<RxQueue<16>> = ConstStaticCell::new(RxQueue::new());
 
 // Outgoing messages
 const EXAMPLE_MESSAGE_ONE: StandardId = StandardId::new(0x01).unwrap();
@@ -32,7 +35,7 @@ async fn main(spawner: Spawner) {
     let p = embassy_mcxa::init(Config::default());
 
     // Create and configure a `FlexCan` instance for CAN0.
-    let can0 = FlexCan::new(p.CAN0, p.P1_11, p.P1_2, FlexCanConfig {
+    let can0 = FlexCan::new_async(p.CAN0, p.P1_11, p.P1_2, RX_QUEUE.take(), FlexCanConfig {
         filters: filters!(
             Filter::Standard(EXAMPLE_MESSAGE_THREE), Filter::Extended(EXAMPLE_MESSAGE_FOUR),
         ),
@@ -47,7 +50,7 @@ async fn main(spawner: Spawner) {
 }
 
 #[embassy_executor::task]
-async fn can0_tx(mut tx0: FlexCanTx<'static>) {
+async fn can0_tx(mut tx0: FlexCanTx<'static, Async>) {
     // Task for sending outgoing messages
     loop {
         let frame1 = Frame::new(EXAMPLE_MESSAGE_ONE, &[0, 1, 2]).expect("Message payload too long!");
@@ -60,7 +63,7 @@ async fn can0_tx(mut tx0: FlexCanTx<'static>) {
 }
 
 #[embassy_executor::task]
-async fn can0_rx(rx0: FlexCanRx<'static>) {
+async fn can0_rx(rx0: FlexCanRx<'static, Async>) {
     // Task for receiving incoming messages
     loop {
         let frame = rx0.receive().await;

@@ -2,7 +2,7 @@
 #![no_main]
 
 mod node_one;
-mod node_two;
+mod node_two_blocking;
 
 //mod example;
 
@@ -23,7 +23,7 @@ async fn main(spawner: Spawner) {
     }).expect("Failed to spawn node_one."));
 
 
-    spawner.spawn(node_two::main(spawner, node_two::Resources {
+    spawner.spawn(node_two_blocking::main(spawner, node_two_blocking::Resources {
         can: p.CAN1,
         tx_pin: p.P1_12,
         rx_pin: p.P1_17,
