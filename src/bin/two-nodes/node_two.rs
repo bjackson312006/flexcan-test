@@ -8,20 +8,14 @@ use embassy_time::{Duration, Timer};
 use static_cell::ConstStaticCell;
 
 use embassy_mcxa::{
-    bind_interrupts, config::Config, Peripherals, Peri,
-    peripherals::{CAN1, P1_12, P1_17},
+    bind_interrupts, config::Config, Peripherals,
+    peripherals::CAN1,
     flexcan::filter::{filters, Filter,},
     flexcan::classic::{
         FlexCan, FlexCanConfig, FlexCanRx, FlexCanTx, InterruptHandler, Async, RxQueue,
         frame::{Frame, StandardId, ExtendedId},
     },
 };
-
-pub struct Resources {
-    pub can:    Peri<'static, CAN1>,
-    pub tx_pin: Peri<'static, P1_12>,
-    pub rx_pin: Peri<'static, P1_17>,
-}
 
 bind_interrupts!(struct Irqs {
     CAN1 => InterruptHandler<CAN1>;
@@ -38,9 +32,9 @@ const EXAMPLE_MESSAGE_ONE: StandardId = StandardId::new(0x01).unwrap();
 const EXAMPLE_MESSAGE_TWO: ExtendedId = ExtendedId::new(0xFAF).unwrap();
 
 #[embassy_executor::task]
-pub async fn main(spawner: Spawner, resources: Resources) {
+pub async fn main(spawner: Spawner, resources: crate::NodeTwoResources) {
     // Create and configure a `FlexCan` instance for CAN1.
-    let can1 = FlexCan::new_async(resources.can, resources.tx_pin, resources.rx_pin, RX_QUEUE.take(), FlexCanConfig {
+    let can1 = FlexCan::new_async(resources.can, resources.rx_pin, resources.tx_pin, RX_QUEUE.take(), FlexCanConfig {
         filters: filters!(
             Filter::AcceptAllStandard,
             //Filter::Standard(EXAMPLE_MESSAGE_ONE), Filter::Extended(EXAMPLE_MESSAGE_TWO),

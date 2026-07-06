@@ -47,7 +47,7 @@ async fn main(_spawner: Spawner) {
         can0.blocking_send(&frame2);
 
         // Drain any incoming messages.
-        while let Ok(frame) = can0.try_receive() {
+        while let Ok(frame) = can0.blocking_receive_timeout(Duration::from_millis(5)) {
             defmt::info!("CAN0 RX id={:?} len={}", frame.id(), frame.dlc());
         }
 
